@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import admissionServiceClient from ".";
 
-const getAllModule = async (request: Request, response: Response) => {
+const getAllModule = async (_request: Request, response: Response) => {
   try {
     admissionServiceClient.GetAllModule({}, (err: any, res: any) => {
       if (err) {
@@ -10,7 +10,7 @@ const getAllModule = async (request: Request, response: Response) => {
       return response.json(res.modules).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -23,7 +23,7 @@ const createModule = async (request: Request, response: Response) => {
       return response.json(res.module).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -40,7 +40,7 @@ const updateModule = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -54,7 +54,20 @@ const deleteModule = async (request: Request, response: Response) => {
       return response.json(res.message).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
+  }
+};
+
+const getAllMemberSchool = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllMemberSchool({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.schools).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
   }
 };
 
@@ -70,7 +83,7 @@ const createMemberSchool = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -87,7 +100,7 @@ const updateMemberSchool = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -101,7 +114,7 @@ const deleteMemberSchool = async (request: Request, response: Response) => {
       return response.json(res.message).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -114,7 +127,7 @@ const createMajor = async (request: Request, response: Response) => {
       return response.json(res.major).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -131,7 +144,7 @@ const updateMajor = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -145,7 +158,7 @@ const deleteMajor = async (request: Request, response: Response) => {
       return response.json(res.message).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -158,7 +171,7 @@ const createSubject = async (request: Request, response: Response) => {
       return response.json(res.subject).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -175,7 +188,7 @@ const updateSubject = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -189,7 +202,7 @@ const deleteSubject = async (request: Request, response: Response) => {
       return response.json(res.message).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -205,7 +218,7 @@ const createSubjectBlock = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -222,7 +235,7 @@ const updateSubjectBlock = async (request: Request, response: Response) => {
       }
     );
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -236,7 +249,7 @@ const deleteSubjectBlock = async (request: Request, response: Response) => {
       return response.json(res.message).status(200);
     });
   } catch (error) {
-    return error;
+    return response.json("Error").status(500);
   }
 };
 
@@ -257,6 +270,7 @@ const admissionController = {
   createSubjectBlock,
   updateSubjectBlock,
   deleteSubjectBlock,
+  getAllMemberSchool,
 };
 
 export default admissionController;

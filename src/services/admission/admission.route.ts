@@ -10,9 +10,10 @@ router.put("/modules/:id", admissionController.updateModule);
 router.delete("/modules/:id", admissionController.deleteModule);
 
 // member school
-router.post("/member_schools", admissionController.createMemberSchool);
-router.put("/member_schools/:id", admissionController.updateMemberSchool);
-router.delete("/member_schools/:id", admissionController.deleteMemberSchool);
+router.get("/member-schools", admissionController.getAllMemberSchool);
+router.post("/member-schools", admissionController.createMemberSchool);
+router.put("/member-schools/:id", admissionController.updateMemberSchool);
+router.delete("/member-schools/:id", admissionController.deleteMemberSchool);
 
 // majors
 router.post("/majors", admissionController.createMajor);
@@ -25,8 +26,8 @@ router.put("/subjects/:id", admissionController.updateSubject);
 router.delete("/subjects/:id", admissionController.deleteSubject);
 
 // subject block
-router.post("/subject_blocks", admissionController.createSubjectBlock);
-router.put("/subject_blocks/:id", admissionController.updateSubjectBlock);
-router.delete("/subject_blocks/:id", admissionController.deleteSubjectBlock);
+router.post("/subject-blocks", admissionController.createSubjectBlock);
+router.put("/subject-blocks/:id", admissionController.updateSubjectBlock);
+router.delete("/subject-blocks/:id", admissionController.deleteSubjectBlock);
 
 export default router;

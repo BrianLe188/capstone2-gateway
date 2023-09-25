@@ -7,12 +7,10 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 };
 
 export interface ProtoGrpcType {
-  module: {
-    Module: MessageTypeDefinition
-    ModuleResponse: MessageTypeDefinition
-    Modules: MessageTypeDefinition
-    ModulesResponse: MessageTypeDefinition
-    UpdateModule: MessageTypeDefinition
+  role: {
+    Role: MessageTypeDefinition
+    RoleResponse: MessageTypeDefinition
+    UpdateRole: MessageTypeDefinition
   }
 }
 

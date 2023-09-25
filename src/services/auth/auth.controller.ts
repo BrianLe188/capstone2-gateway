@@ -1,0 +1,118 @@
+import { Request, Response } from "express";
+import authServiceClient from ".";
+
+const createUser = async (request: Request, response: Response) => {
+  try {
+    authServiceClient.CreateUser(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.user).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateUser = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    authServiceClient.UpdateUser(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.user).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteUser = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    authServiceClient.DeleteUser({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const login = async (request: Request, response: Response) => {
+  try {
+    authServiceClient.Login(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      if (res?.error) {
+        return response.json(res.error).status(400);
+      }
+      return response.json({ accessToken: res.token.accessToken }).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const createRole = async (request: Request, response: Response) => {
+  try {
+    authServiceClient.CreateRole(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.role).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateRole = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    authServiceClient.UpdateRole(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.role).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteRole = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    authServiceClient.DeleteRole({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const authController = {
+  createUser,
+  updateUser,
+  deleteUser,
+  login,
+  createRole,
+  updateRole,
+  deleteRole,
+};
+
+export default authController;
