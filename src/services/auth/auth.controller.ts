@@ -1,8 +1,24 @@
 import { Request, Response } from "express";
 import authServiceClient from ".";
 
+const getAllUser = async (_request: Request, response: Response) => {
+  try {
+    authServiceClient.GetAllUser({}, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.users).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const createUser = async (request: Request, response: Response) => {
   try {
+    if (!request.body.user?.password) {
+      request.body.user.password = "123";
+    }
     authServiceClient.CreateUser(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
@@ -113,6 +129,7 @@ const authController = {
   createRole,
   updateRole,
   deleteRole,
+  getAllUser,
 };
 
 export default authController;

@@ -4,6 +4,7 @@ import { isExistUser } from "../../middlewares/user";
 
 const router = Router();
 
+router.get("/users", authController.getAllUser);
 router.post("/register", isExistUser, authController.createUser);
 router.post("/login", authController.login);
 router.put("/users/:id", authController.updateUser);
