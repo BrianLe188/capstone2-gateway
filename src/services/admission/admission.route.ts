@@ -21,11 +21,13 @@ router.put("/majors/:id", admissionController.updateMajor);
 router.delete("/majors/:id", admissionController.deleteMajor);
 
 // subject
+router.get("/subjects", admissionController.getAllSubject);
 router.post("/subjects", admissionController.createSubject);
 router.put("/subjects/:id", admissionController.updateSubject);
 router.delete("/subjects/:id", admissionController.deleteSubject);
 
 // subject block
+router.get("/subject-blocks", admissionController.getAllSubjectBlock);
 router.post("/subject-blocks", admissionController.createSubjectBlock);
 router.put("/subject-blocks/:id", admissionController.updateSubjectBlock);
 router.delete("/subject-blocks/:id", admissionController.deleteSubjectBlock);

@@ -162,6 +162,19 @@ const deleteMajor = async (request: Request, response: Response) => {
   }
 };
 
+const getAllSubject = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllSubject({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.subjects).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const createSubject = async (request: Request, response: Response) => {
   try {
     admissionServiceClient.CreateSubject(request.body, (err: any, res: any) => {
@@ -253,6 +266,19 @@ const deleteSubjectBlock = async (request: Request, response: Response) => {
   }
 };
 
+const getAllSubjectBlock = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllSubjectBlock({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.blocks).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   getAllModule,
   createModule,
@@ -271,6 +297,8 @@ const admissionController = {
   updateSubjectBlock,
   deleteSubjectBlock,
   getAllMemberSchool,
+  getAllSubject,
+  getAllSubjectBlock,
 };
 
 export default admissionController;
