@@ -279,6 +279,22 @@ const getAllSubjectBlock = async (_request: Request, response: Response) => {
   }
 };
 
+const importSubjectBlock = async (request: Request, response: Response) => {
+  try {
+    admissionServiceClient.ImportSubjectBlock(
+      request.body,
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.message).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   getAllModule,
   createModule,
@@ -299,6 +315,7 @@ const admissionController = {
   getAllMemberSchool,
   getAllSubject,
   getAllSubjectBlock,
+  importSubjectBlock,
 };
 
 export default admissionController;

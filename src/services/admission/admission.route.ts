@@ -27,6 +27,7 @@ router.put("/subjects/:id", admissionController.updateSubject);
 router.delete("/subjects/:id", admissionController.deleteSubject);
 
 // subject block
+router.post("/subject-blocks/import", admissionController.importSubjectBlock);
 router.get("/subject-blocks", admissionController.getAllSubjectBlock);
 router.post("/subject-blocks", admissionController.createSubjectBlock);
 router.put("/subject-blocks/:id", admissionController.updateSubjectBlock);
