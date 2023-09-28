@@ -1,4 +1,4 @@
-// Original file: admission/majors.proto
+// Original file: core/majors.proto
 
 import type { Majorss as _majors_Majorss, Majorss__Output as _majors_Majorss__Output } from '../majors/Majorss';
 

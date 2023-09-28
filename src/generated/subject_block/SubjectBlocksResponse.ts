@@ -1,4 +1,4 @@
-// Original file: admission/subject-block.proto
+// Original file: core/subject-block.proto
 
 import type { SubjectBlocks as _subject_block_SubjectBlocks, SubjectBlocks__Output as _subject_block_SubjectBlocks__Output } from '../subject_block/SubjectBlocks';
 

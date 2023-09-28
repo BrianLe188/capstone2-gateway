@@ -1,4 +1,4 @@
-// Original file: admission/subject.proto
+// Original file: core/subject.proto
 
 import type { Subjects as _subject_Subjects, Subjects__Output as _subject_Subjects__Output } from '../subject/Subjects';
 

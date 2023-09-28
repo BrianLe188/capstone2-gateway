@@ -1,4 +1,4 @@
-// Original file: admission/subject.proto
+// Original file: core/subject.proto
 
 
 export interface Subject {

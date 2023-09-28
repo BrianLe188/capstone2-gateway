@@ -1,4 +1,4 @@
-// Original file: admission/module.proto
+// Original file: core/module.proto
 
 
 export interface Module {

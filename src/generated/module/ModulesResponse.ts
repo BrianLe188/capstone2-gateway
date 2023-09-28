@@ -1,4 +1,4 @@
-// Original file: admission/module.proto
+// Original file: core/module.proto
 
 import type { Modules as _module_Modules, Modules__Output as _module_Modules__Output } from '../module/Modules';
 

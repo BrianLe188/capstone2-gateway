@@ -1,4 +1,4 @@
-// Original file: ai/ai.proto
+// Original file: core/core.proto
 
 
 export interface GreetRequest {

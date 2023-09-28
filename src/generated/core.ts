@@ -1,15 +1,15 @@
 import type * as grpc from '@grpc/grpc-js';
 import type { MessageTypeDefinition } from '@grpc/proto-loader';
 
-import type { AdmissionClient as _admission_AdmissionClient, AdmissionDefinition as _admission_AdmissionDefinition } from './admission/Admission';
+import type { CoreClient as _core_CoreClient, CoreDefinition as _core_CoreDefinition } from './core/Core';
 
 type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> = {
   new(...args: ConstructorParameters<Constructor>): Subtype;
 };
 
 export interface ProtoGrpcType {
-  admission: {
-    Admission: SubtypeConstructor<typeof grpc.Client, _admission_AdmissionClient> & { service: _admission_AdmissionDefinition }
+  core: {
+    Core: SubtypeConstructor<typeof grpc.Client, _core_CoreClient> & { service: _core_CoreDefinition }
     GreetRequest: MessageTypeDefinition
     GreetResponse: MessageTypeDefinition
     Message: MessageTypeDefinition

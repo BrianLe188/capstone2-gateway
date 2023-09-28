@@ -1,4 +1,4 @@
-// Original file: admission/majors.proto
+// Original file: core/majors.proto
 
 
 export interface Majors {

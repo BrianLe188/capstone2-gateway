@@ -1,4 +1,4 @@
-// Original file: admission/member-school.proto
+// Original file: core/member-school.proto
 
 import type { MemberSchools as _member_school_MemberSchools, MemberSchools__Output as _member_school_MemberSchools__Output } from '../member_school/MemberSchools';
 

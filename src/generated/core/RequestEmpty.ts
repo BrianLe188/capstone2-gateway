@@ -1,4 +1,4 @@
-// Original file: admission/admission.proto
+// Original file: core/core.proto
 
 
 export interface RequestEmpty {

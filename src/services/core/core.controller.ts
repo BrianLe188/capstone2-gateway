@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import admissionServiceClient from ".";
+import coreServiceClient from ".";
 
 const getAllModule = async (_request: Request, response: Response) => {
   try {
-    admissionServiceClient.GetAllModule({}, (err: any, res: any) => {
+    coreServiceClient.GetAllModule({}, (err: any, res: any) => {
       if (err) {
         return response.json(res?.error).status(400);
       }
@@ -16,7 +16,7 @@ const getAllModule = async (_request: Request, response: Response) => {
 
 const createModule = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.CreateModule(request.body, (err: any, res: any) => {
+    coreServiceClient.CreateModule(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -30,7 +30,7 @@ const createModule = async (request: Request, response: Response) => {
 const updateModule = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.UpdateModule(
+    coreServiceClient.UpdateModule(
       { id, body: request.body },
       (err: any, res: any) => {
         if (err) {
@@ -47,7 +47,7 @@ const updateModule = async (request: Request, response: Response) => {
 const deleteModule = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.DeleteModule({ id }, (err: any, res: any) => {
+    coreServiceClient.DeleteModule({ id }, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -60,7 +60,7 @@ const deleteModule = async (request: Request, response: Response) => {
 
 const getAllMemberSchool = async (_request: Request, response: Response) => {
   try {
-    admissionServiceClient.GetAllMemberSchool({}, (err: any, res: any) => {
+    coreServiceClient.GetAllMemberSchool({}, (err: any, res: any) => {
       if (err) {
         return response.json(res?.error).status(400);
       }
@@ -73,15 +73,12 @@ const getAllMemberSchool = async (_request: Request, response: Response) => {
 
 const createMemberSchool = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.CreateMemberSchool(
-      request.body,
-      (err: any, res: any) => {
-        if (err) {
-          return response.json("Error").status(400);
-        }
-        return response.json(res.school).status(200);
+    coreServiceClient.CreateMemberSchool(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
       }
-    );
+      return response.json(res.school).status(200);
+    });
   } catch (error) {
     return response.json("Error").status(500);
   }
@@ -90,7 +87,7 @@ const createMemberSchool = async (request: Request, response: Response) => {
 const updateMemberSchool = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.UpdateMemberSchool(
+    coreServiceClient.UpdateMemberSchool(
       { id, body: request.body },
       (err: any, res: any) => {
         if (err) {
@@ -107,7 +104,7 @@ const updateMemberSchool = async (request: Request, response: Response) => {
 const deleteMemberSchool = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.DeleteMemberSchool({ id }, (err: any, res: any) => {
+    coreServiceClient.DeleteMemberSchool({ id }, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -120,7 +117,7 @@ const deleteMemberSchool = async (request: Request, response: Response) => {
 
 const createMajor = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.CreateMajor(request.body, (err: any, res: any) => {
+    coreServiceClient.CreateMajor(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -134,7 +131,7 @@ const createMajor = async (request: Request, response: Response) => {
 const updateMajor = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.UpdateMajor(
+    coreServiceClient.UpdateMajor(
       { id, body: request.body },
       (err: any, res: any) => {
         if (err) {
@@ -151,7 +148,7 @@ const updateMajor = async (request: Request, response: Response) => {
 const deleteMajor = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.DeleteMajor({ id }, (err: any, res: any) => {
+    coreServiceClient.DeleteMajor({ id }, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -164,7 +161,7 @@ const deleteMajor = async (request: Request, response: Response) => {
 
 const getAllSubject = async (_request: Request, response: Response) => {
   try {
-    admissionServiceClient.GetAllSubject({}, (err: any, res: any) => {
+    coreServiceClient.GetAllSubject({}, (err: any, res: any) => {
       if (err) {
         return response.json(res?.error).status(400);
       }
@@ -177,7 +174,7 @@ const getAllSubject = async (_request: Request, response: Response) => {
 
 const createSubject = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.CreateSubject(request.body, (err: any, res: any) => {
+    coreServiceClient.CreateSubject(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -191,7 +188,7 @@ const createSubject = async (request: Request, response: Response) => {
 const updateSubject = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.UpdateSubject(
+    coreServiceClient.UpdateSubject(
       { id, body: request.body },
       (err: any, res: any) => {
         if (err) {
@@ -208,7 +205,20 @@ const updateSubject = async (request: Request, response: Response) => {
 const deleteSubject = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.DeleteSubject({ id }, (err: any, res: any) => {
+    coreServiceClient.DeleteSubject({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const importSubject = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.ImportSubject(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -221,15 +231,12 @@ const deleteSubject = async (request: Request, response: Response) => {
 
 const createSubjectBlock = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.CreateSubjectBlock(
-      request.body,
-      (err: any, res: any) => {
-        if (err) {
-          return response.json("Error").status(400);
-        }
-        return response.json(res.block).status(200);
+    coreServiceClient.CreateSubjectBlock(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
       }
-    );
+      return response.json(res.block).status(200);
+    });
   } catch (error) {
     return response.json("Error").status(500);
   }
@@ -238,7 +245,7 @@ const createSubjectBlock = async (request: Request, response: Response) => {
 const updateSubjectBlock = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.UpdateSubjectBlock(
+    coreServiceClient.UpdateSubjectBlock(
       { id, body: request.body },
       (err: any, res: any) => {
         if (err) {
@@ -255,7 +262,7 @@ const updateSubjectBlock = async (request: Request, response: Response) => {
 const deleteSubjectBlock = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    admissionServiceClient.DeleteSubject({ id }, (err: any, res: any) => {
+    coreServiceClient.DeleteSubjectBlock({ id }, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
       }
@@ -268,7 +275,7 @@ const deleteSubjectBlock = async (request: Request, response: Response) => {
 
 const getAllSubjectBlock = async (_request: Request, response: Response) => {
   try {
-    admissionServiceClient.GetAllSubjectBlock({}, (err: any, res: any) => {
+    coreServiceClient.GetAllSubjectBlock({}, (err: any, res: any) => {
       if (err) {
         return response.json(res?.error).status(400);
       }
@@ -281,15 +288,12 @@ const getAllSubjectBlock = async (_request: Request, response: Response) => {
 
 const importSubjectBlock = async (request: Request, response: Response) => {
   try {
-    admissionServiceClient.ImportSubjectBlock(
-      request.body,
-      (err: any, res: any) => {
-        if (err) {
-          return response.json("Error").status(400);
-        }
-        return response.json(res.message).status(200);
+    coreServiceClient.ImportSubjectBlock(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
       }
-    );
+      return response.json(res.message).status(200);
+    });
   } catch (error) {
     return response.json("Error").status(500);
   }
@@ -316,6 +320,7 @@ const admissionController = {
   getAllSubject,
   getAllSubjectBlock,
   importSubjectBlock,
+  importSubject,
 };
 
 export default admissionController;

@@ -1,4 +1,4 @@
-// Original file: admission/member-school.proto
+// Original file: core/member-school.proto
 
 
 export interface MemberSchool {
