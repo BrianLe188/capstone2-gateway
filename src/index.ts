@@ -12,7 +12,11 @@ import { io as clientIo } from "socket.io-client";
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 const adviseIo = clientIo("http://localhost:4998/advise");
 
 function main() {
@@ -24,7 +28,7 @@ function main() {
 
   advise(io.of("/advise"), { adviseIo });
 
-  app.listen(process.env.GATEWAY_API_PORT, () => {
+  server.listen(process.env.GATEWAY_API_PORT, () => {
     console.log(
       `Gateway api in running on ${process.env.GATEWAY_API_HOST}:${process.env.GATEWAY_API_PORT}`
     );
