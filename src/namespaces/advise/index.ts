@@ -3,12 +3,12 @@ import { Socket } from "socket.io-client";
 
 const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   io.on("connection", (socket) => {
+    console.log(`${socket.id} connect`);
     socket.on("chat", ({ type, content }) => {
-      console.log({ type, content });
       adviseIo.emit("chat", { type, content });
     });
 
-    socket.on("receive_message", ({ content }) => {
+    adviseIo.on("receive_message", ({ content }) => {
       socket.emit("receive_message", { content, type: "ai" });
     });
   });
