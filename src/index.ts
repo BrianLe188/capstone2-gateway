@@ -9,6 +9,8 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import advise from "./namespaces/advise";
 import { io as clientIo } from "socket.io-client";
+import amqp from "amqplib";
+import queue from "./queue";
 
 const app = express();
 const server = createServer(app);
@@ -19,20 +21,31 @@ const io = new Server(server, {
 });
 const adviseIo = clientIo("http://localhost:4998/advise");
 
-function main() {
-  app.use(morgan("dev"));
-  app.use(cors());
-  app.use(bodyParser.json());
+async function main() {
+  try {
+    const amqpConnection = await amqp.connect("amqp://127.0.0.1");
+    const channel = await amqpConnection.createChannel();
 
-  app.use(clientRoute);
+    app.use(morgan("dev"));
+    app.use(cors());
+    app.use(bodyParser.json());
 
-  advise(io.of("/advise"), { adviseIo });
+    app.use(clientRoute);
 
-  server.listen(process.env.GATEWAY_API_PORT, () => {
-    console.log(
-      `Gateway api in running on ${process.env.GATEWAY_API_HOST}:${process.env.GATEWAY_API_PORT}`
-    );
-  });
+    advise(io.of("/advise"), { adviseIo });
+
+    queue({ channel });
+
+    server.listen(process.env.GATEWAY_API_PORT, () => {
+      console.log(
+        `Gateway api in running on ${process.env.GATEWAY_API_HOST}:${process.env.GATEWAY_API_PORT}`
+      );
+    });
+  } catch (error) {
+    setInterval(() => {
+      main();
+    }, 1000);
+  }
 }
 
 main();
