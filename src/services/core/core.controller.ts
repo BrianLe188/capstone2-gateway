@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import coreServiceClient from ".";
+import { MyEventEmitter } from "../../events";
 
 const getAllModule = async (_request: Request, response: Response) => {
   try {
@@ -299,6 +300,76 @@ const importSubjectBlock = async (request: Request, response: Response) => {
   }
 };
 
+const getAllFile = async (_request: Request, response: Response) => {
+  try {
+    coreServiceClient.GetAllFiles({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.files).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const createFile = async (request: Request, response: Response) => {
+  try {
+    const { name, extension } = request.body;
+    const file = request.file;
+    MyEventEmitter.emit("upload_file", file);
+    const path: string = await new Promise((resolve, _reject) => {
+      MyEventEmitter.on("return_file", ({ path }) => {
+        if (path) {
+          resolve(path);
+        }
+      });
+    });
+    coreServiceClient.CreateFile(
+      { name, extension, path },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.file).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateFile = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.UpdateFile(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.file).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteFile = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.DeleteFile({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   getAllModule,
   createModule,
@@ -321,6 +392,10 @@ const admissionController = {
   getAllSubjectBlock,
   importSubjectBlock,
   importSubject,
+  getAllFile,
+  createFile,
+  updateFile,
+  deleteFile,
 };
 
 export default admissionController;

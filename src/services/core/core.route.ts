@@ -1,5 +1,8 @@
 import { Router } from "express";
 import coreController from "./core.controller";
+import multer from "multer";
+
+const upload = multer();
 
 const router = Router();
 
@@ -33,5 +36,11 @@ router.get("/subject-blocks", coreController.getAllSubjectBlock);
 router.post("/subject-blocks", coreController.createSubjectBlock);
 router.put("/subject-blocks/:id", coreController.updateSubjectBlock);
 router.delete("/subject-blocks/:id", coreController.deleteSubjectBlock);
+
+// files
+router.get("/files", coreController.getAllFile);
+router.post("/files", upload.single("file"), coreController.createFile);
+router.put("/files/:id", upload.single("file"), coreController.updateFile);
+router.delete("/files/:id", coreController.deleteFile);
 
 export default router;
