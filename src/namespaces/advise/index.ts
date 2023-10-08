@@ -4,8 +4,8 @@ import { Socket } from "socket.io-client";
 const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   io.on("connection", (socket) => {
     console.log(`${socket.id} connect`);
-    socket.on("chat", ({ type, content }) => {
-      adviseIo.emit("chat", { type, content });
+    socket.on("chat", ({ type, content, file }) => {
+      adviseIo.emit("chat", { type, content, file });
     });
 
     adviseIo.on("receive_message", ({ content }) => {

@@ -319,7 +319,7 @@ const createFile = async (request: Request, response: Response) => {
     const file = request.file;
     MyEventEmitter.emit("upload_file", file);
     const path: string = await new Promise((resolve, _reject) => {
-      MyEventEmitter.on("return_file", ({ path }) => {
+      MyEventEmitter.on("return_path", ({ path }) => {
         if (path) {
           resolve(path);
         }
@@ -342,8 +342,20 @@ const createFile = async (request: Request, response: Response) => {
 const updateFile = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
+    const { name, extension } = request.body;
+    const file = request.file;
+    if (file) {
+      MyEventEmitter.emit("upload_file", file);
+    }
+    const path: string = await new Promise((resolve, _reject) => {
+      MyEventEmitter.on("return_path", ({ path }) => {
+        if (path) {
+          resolve(path);
+        }
+      });
+    });
     coreServiceClient.UpdateFile(
-      { id, body: request.body },
+      { id, body: { name, extension, path } },
       (err: any, res: any) => {
         if (err) {
           return response.json("Error").status(400);

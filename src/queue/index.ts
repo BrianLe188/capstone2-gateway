@@ -3,7 +3,7 @@ import { MyEventEmitter } from "../events";
 
 const queue = async ({ channel }: { channel: Channel }) => {
   const messageExchange = "file";
-  const returnMessageQueue = "return_file";
+  const returnMessageQueue = "return_path";
 
   await channel.assertExchange(messageExchange, "direct");
   await channel.assertQueue(returnMessageQueue);
@@ -17,7 +17,7 @@ const queue = async ({ channel }: { channel: Channel }) => {
     (msg) => {
       const content = msg?.content;
       if (content) {
-        MyEventEmitter.emit("return_file", { path: content.toString() });
+        MyEventEmitter.emit("return_path", { path: content.toString() });
       }
       channel.ack(msg as Message);
     },
