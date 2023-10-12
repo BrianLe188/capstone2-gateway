@@ -382,7 +382,7 @@ const deleteFile = async (request: Request, response: Response) => {
   }
 };
 
-const admissionController = {
+const coreController = {
   getAllModule,
   createModule,
   updateModule,
@@ -410,4 +410,4 @@ const admissionController = {
   deleteFile,
 };
 
-export default admissionController;
+export default coreController;
