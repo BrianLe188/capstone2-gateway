@@ -79,12 +79,40 @@ const getAllGender = async (_request: Request, response: Response) => {
   }
 };
 
+const getAllArea = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllArea({}, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.areas).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getAllPriority = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllPriority({}, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.priorities).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   applyApplicationAdmissionRegistration,
   applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
   applyApplicationForAdmissionWithAHighSchoolScript,
   applyApplicationForStraightAdmissionAndPriorityConsideration,
   getAllGender,
+  getAllArea,
+  getAllPriority,
 };
 
 export default admissionController;
