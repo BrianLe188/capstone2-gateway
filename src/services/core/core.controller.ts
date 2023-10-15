@@ -116,6 +116,19 @@ const deleteMemberSchool = async (request: Request, response: Response) => {
   }
 };
 
+const getAllMajor = async (_request: Request, response: Response) => {
+  try {
+    coreServiceClient.GetAllMajors({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.majors).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const createMajor = async (request: Request, response: Response) => {
   try {
     coreServiceClient.CreateMajor(request.body, (err: any, res: any) => {
@@ -393,6 +406,7 @@ const coreController = {
   createMajor,
   updateMajor,
   deleteMajor,
+  getAllMajor,
   createSubject,
   updateSubject,
   deleteSubject,

@@ -19,6 +19,7 @@ router.put("/member-schools/:id", coreController.updateMemberSchool);
 router.delete("/member-schools/:id", coreController.deleteMemberSchool);
 
 // majors
+router.get("/majors", coreController.getAllMajor);
 router.post("/majors", coreController.createMajor);
 router.put("/majors/:id", coreController.updateMajor);
 router.delete("/majors/:id", coreController.deleteMajor);
