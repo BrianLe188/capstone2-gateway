@@ -24,5 +24,6 @@ router.post(
 router.get("/genders", admissionController.getAllGender);
 router.get("/areas", admissionController.getAllArea);
 router.get("/priorities", admissionController.getAllPriority);
+router.get("/object-admissions", admissionController.getAllObjectAdmission);
 
 export default router;

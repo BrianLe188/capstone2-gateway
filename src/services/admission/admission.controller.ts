@@ -105,6 +105,19 @@ const getAllPriority = async (_request: Request, response: Response) => {
   }
 };
 
+const getAllObjectAdmission = async (_request: Request, response: Response) => {
+  try {
+    admissionServiceClient.GetAllObjectAdmission({}, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.objects).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   applyApplicationAdmissionRegistration,
   applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
@@ -113,6 +126,7 @@ const admissionController = {
   getAllGender,
   getAllArea,
   getAllPriority,
+  getAllObjectAdmission,
 };
 
 export default admissionController;
