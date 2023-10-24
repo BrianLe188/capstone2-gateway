@@ -116,6 +116,19 @@ const deleteMemberSchool = async (request: Request, response: Response) => {
   }
 };
 
+const importMajor = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.ImportMajor(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const getAllMajor = async (_request: Request, response: Response) => {
   try {
     coreServiceClient.GetAllMajors({}, (err: any, res: any) => {
@@ -395,6 +408,76 @@ const deleteFile = async (request: Request, response: Response) => {
   }
 };
 
+const importSubMajor = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.ImportSubMajor(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getAllSubMajor = async (_request: Request, response: Response) => {
+  try {
+    coreServiceClient.GetAllSubMajors({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.submajors).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const createSubMajor = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.CreateSubMajor(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.submajor).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateSubMajor = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.UpdateSubMajor(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.submajor).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteSubMajor = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.DeleteSubMajor({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const coreController = {
   getAllModule,
   createModule,
@@ -422,6 +505,12 @@ const coreController = {
   createFile,
   updateFile,
   deleteFile,
+  importMajor,
+  importSubMajor,
+  createSubMajor,
+  updateSubMajor,
+  deleteSubMajor,
+  getAllSubMajor,
 };
 
 export default coreController;

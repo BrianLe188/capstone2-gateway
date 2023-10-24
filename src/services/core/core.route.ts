@@ -19,6 +19,7 @@ router.put("/member-schools/:id", coreController.updateMemberSchool);
 router.delete("/member-schools/:id", coreController.deleteMemberSchool);
 
 // majors
+router.post("/majors/import", coreController.importMajor);
 router.get("/majors", coreController.getAllMajor);
 router.post("/majors", coreController.createMajor);
 router.put("/majors/:id", coreController.updateMajor);
@@ -43,5 +44,12 @@ router.get("/files", coreController.getAllFile);
 router.post("/files", upload.single("file"), coreController.createFile);
 router.put("/files/:id", upload.single("file"), coreController.updateFile);
 router.delete("/files/:id", coreController.deleteFile);
+
+// sub majors
+router.post("/submajors/import", coreController.importSubMajor);
+router.get("/submajors", coreController.getAllSubMajor);
+router.post("/submajors", coreController.createSubMajor);
+router.put("/submajors/:id", coreController.updateSubMajor);
+router.delete("/submajors/:id", coreController.deleteSubMajor);
 
 export default router;
