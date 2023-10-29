@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, request } from "express";
 import coreServiceClient from ".";
 import { MyEventEmitter } from "../../events";
 
@@ -111,6 +111,25 @@ const deleteMemberSchool = async (request: Request, response: Response) => {
       }
       return response.json(res.message).status(200);
     });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const importSubjectBlockIntoMajor = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    coreServiceClient.ImportSubjectBlockIntoMajor(
+      request.body,
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.message).status(200);
+      }
+    );
   } catch (error) {
     return response.json("Error").status(500);
   }
@@ -511,6 +530,7 @@ const coreController = {
   updateSubMajor,
   deleteSubMajor,
   getAllSubMajor,
+  importSubjectBlockIntoMajor,
 };
 
 export default coreController;
