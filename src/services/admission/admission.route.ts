@@ -25,5 +25,13 @@ router.get("/genders", admissionController.getAllGender);
 router.get("/areas", admissionController.getAllArea);
 router.get("/priorities", admissionController.getAllPriority);
 router.get("/object-admissions", admissionController.getAllObjectAdmission);
+router.get(
+  "/application-admisison-registration",
+  admissionController.getApplyApplicationAdmissionRegistration
+);
+router.get(
+  "/application-admisison-high-school-script",
+  admissionController.getApplicationForAdmissionWithAHighSchoolScript
+);
 
 export default router;
