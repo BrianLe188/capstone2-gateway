@@ -33,5 +33,13 @@ router.get(
   "/application-admisison-high-school-script",
   admissionController.getApplicationForAdmissionWithAHighSchoolScript
 );
+router.get(
+  "/application-for-straight-admission-and-priority-consideration",
+  admissionController.getApplicationForStraightAdmissionAndPriorityConsideration
+);
+router.get(
+  "/application-for-admission-consideration-according-to-the-competence-assessment-test-result",
+  admissionController.getApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult
+);
 
 export default router;

@@ -37,6 +37,10 @@ router.put("/subjects/:id", coreController.updateSubject);
 router.delete("/subjects/:id", coreController.deleteSubject);
 
 // subject block
+router.post(
+  "/subject-blocks/import-subject",
+  coreController.importSubjectIntoBlock
+);
 router.post("/subject-blocks/import", coreController.importSubjectBlock);
 router.get("/subject-blocks", coreController.getAllSubjectBlock);
 router.post("/subject-blocks", coreController.createSubjectBlock);

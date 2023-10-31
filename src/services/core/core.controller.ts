@@ -262,6 +262,22 @@ const deleteSubject = async (request: Request, response: Response) => {
   }
 };
 
+const importSubjectIntoBlock = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.ImportSubjectIntoBlock(
+      request.body,
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.message).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const importSubject = async (request: Request, response: Response) => {
   try {
     coreServiceClient.ImportSubject(request.body, (err: any, res: any) => {
@@ -334,6 +350,7 @@ const getAllSubjectBlock = async (_request: Request, response: Response) => {
 
 const importSubjectBlock = async (request: Request, response: Response) => {
   try {
+    console.log(request.body);
     coreServiceClient.ImportSubjectBlock(request.body, (err: any, res: any) => {
       if (err) {
         return response.json("Error").status(400);
@@ -531,6 +548,7 @@ const coreController = {
   deleteSubMajor,
   getAllSubMajor,
   importSubjectBlockIntoMajor,
+  importSubjectIntoBlock,
 };
 
 export default coreController;

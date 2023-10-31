@@ -38,6 +38,24 @@ const getApplyApplicationAdmissionRegistration = (
   }
 };
 
+const getApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult =
+  (request: Request, response: Response) => {
+    try {
+      admissionServiceClient.GetAllApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult(
+        {},
+        (err: any, res: any) => {
+          if (err) {
+            return response.json(res?.error).status(400);
+          }
+          console.log(res);
+          return response.json(res.applications).status(200);
+        }
+      );
+    } catch (error) {
+      return response.json("Error").status(500);
+    }
+  };
+
 const applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult =
   (request: Request, response: Response) => {
     try {
@@ -85,6 +103,26 @@ const applyApplicationForAdmissionWithAHighSchoolScript = (
       data: body,
     });
     return response.json("Wait to verify, code send to your email").status(200);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getApplicationForStraightAdmissionAndPriorityConsideration = (
+  request: Request,
+  response: Response
+) => {
+  try {
+    admissionServiceClient.GetAllApplicationForStraightAdmissionAndPriorityConsideration(
+      {},
+      (err: any, res: any) => {
+        if (err) {
+          return response.json(res?.error).status(400);
+        }
+        console.log(res);
+        return response.json(res.applications).status(200);
+      }
+    );
   } catch (error) {
     return response.json("Error").status(500);
   }
@@ -169,6 +207,8 @@ const admissionController = {
   getAllObjectAdmission,
   getApplyApplicationAdmissionRegistration,
   getApplicationForAdmissionWithAHighSchoolScript,
+  getApplicationForStraightAdmissionAndPriorityConsideration,
+  getApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
 };
 
 export default admissionController;
