@@ -60,4 +60,10 @@ router.post("/submajors", coreController.createSubMajor);
 router.put("/submajors/:id", coreController.updateSubMajor);
 router.delete("/submajors/:id", coreController.deleteSubMajor);
 
+// rules
+router.get("/rules", coreController.getAllRule);
+router.post("/rules", coreController.createRule);
+router.put("/rules/:id", coreController.updateRule);
+router.delete("/rules/:id", coreController.deleteRule);
+
 export default router;

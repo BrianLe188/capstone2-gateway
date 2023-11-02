@@ -513,7 +513,62 @@ const deleteSubMajor = async (request: Request, response: Response) => {
     return response.json("Error").status(500);
   }
 };
+const getAllRule = async (_request: Request, response: Response) => {
+  try {
+    coreServiceClient.GetAllRule({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.rules).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
 
+const createRule = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.CreateRule(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.rule).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateRule = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.UpdateRule(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.rule).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteRule = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.DeleteRule({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
 const coreController = {
   getAllModule,
   createModule,
@@ -549,6 +604,10 @@ const coreController = {
   getAllSubMajor,
   importSubjectBlockIntoMajor,
   importSubjectIntoBlock,
+  getAllRule,
+  createRule,
+  updateRule,
+  deleteRule,
 };
 
 export default coreController;
