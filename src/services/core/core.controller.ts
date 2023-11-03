@@ -513,6 +513,7 @@ const deleteSubMajor = async (request: Request, response: Response) => {
     return response.json("Error").status(500);
   }
 };
+
 const getAllRule = async (_request: Request, response: Response) => {
   try {
     coreServiceClient.GetAllRule({}, (err: any, res: any) => {
@@ -569,6 +570,64 @@ const deleteRule = async (request: Request, response: Response) => {
     return response.json("Error").status(500);
   }
 };
+
+const getAllCertificate = async (_request: Request, response: Response) => {
+  try {
+    coreServiceClient.GetAllCertificate({}, (err: any, res: any) => {
+      if (err) {
+        return response.json(res?.error).status(400);
+      }
+      return response.json(res.certificates).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const createCertificate = async (request: Request, response: Response) => {
+  try {
+    coreServiceClient.CreateCertificate(request.body, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.certificate).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateCertificate = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.UpdateCertificate(
+      { id, body: request.body },
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.certificate).status(200);
+      }
+    );
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const deleteCertificate = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    coreServiceClient.DeleteCertificate({ id }, (err: any, res: any) => {
+      if (err) {
+        return response.json("Error").status(400);
+      }
+      return response.json(res.message).status(200);
+    });
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const coreController = {
   getAllModule,
   createModule,
@@ -608,6 +667,10 @@ const coreController = {
   createRule,
   updateRule,
   deleteRule,
+  getAllCertificate,
+  createCertificate,
+  updateCertificate,
+  deleteCertificate,
 };
 
 export default coreController;

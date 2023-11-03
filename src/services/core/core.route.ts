@@ -66,4 +66,10 @@ router.post("/rules", coreController.createRule);
 router.put("/rules/:id", coreController.updateRule);
 router.delete("/rules/:id", coreController.deleteRule);
 
+// certificates
+router.get("/certificates", coreController.getAllCertificate);
+router.post("/certificates", coreController.createCertificate);
+router.put("/certificates/:id", coreController.updateCertificate);
+router.delete("/certificates/:id", coreController.deleteCertificate);
+
 export default router;
