@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
 import authServiceClient from ".";
 
-const getAllUser = async (_request: Request, response: Response) => {
+const getAllUser = async (request: Request, response: Response) => {
   try {
-    authServiceClient.GetAllUser({}, (err: any, res: any) => {
-      if (err) {
-        return response.json("Error").status(400);
+    const { data } = request.query;
+    authServiceClient.GetAllUser(
+      JSON.parse(data!.toString()),
+      (err: any, res: any) => {
+        if (err) {
+          return response.json("Error").status(400);
+        }
+        return response.json(res.users).status(200);
       }
-      return response.json(res.users).status(200);
-    });
+    );
   } catch (error) {
     return response.json("Error").status(500);
   }

@@ -5,10 +5,13 @@ const queue = async ({ channel }: { channel: Channel }) => {
   const messageExchange = "file";
   const admissionExchange = "admission";
   const returnMessageQueue = "return_path";
+  const connectRoomQueue = "connect_room";
 
   await channel.assertExchange(messageExchange, "direct");
   await channel.assertExchange(admissionExchange, "direct");
   await channel.assertQueue(returnMessageQueue);
+
+  await channel.assertQueue(connectRoomQueue);
 
   MyEventEmitter.on("upload_file", (data) => {
     channel.publish(messageExchange, "write", data.buffer);
@@ -38,6 +41,10 @@ const queue = async ({ channel }: { channel: Channel }) => {
       noAck: false,
     }
   );
+
+  MyEventEmitter.on("connect_room", (data) => {
+    channel.sendToQueue(connectRoomQueue, Buffer.from(JSON.stringify(data)));
+  });
 };
 
 export default queue;
