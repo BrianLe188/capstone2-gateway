@@ -22,7 +22,7 @@ const verify = async <T>(token: string): Promise<T> => {
         if (err) {
           reject("Error");
         }
-        resolve(res.data);
+        resolve(res?.data);
       }
     );
   });
@@ -32,11 +32,13 @@ const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   io.on("connection", async (socket) => {
     console.log(`${socket.id} connect`);
     const token = socket.handshake.headers.token as string;
+
     socket.on("assign_socket", async () => {
-      let user: User;
       try {
+        let user: User | null = null;
         if (token) {
           const _verify = await verify<{ id: string; email: string }>(token);
+          console.log(_verify);
           if (_verify) {
             user = await new Promise((resolve, reject) => {
               authServiceClient.UpdateUser(
@@ -50,7 +52,7 @@ const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
                   if (err) {
                     reject("Error");
                   }
-                  resolve(res.user);
+                  resolve(res?.user);
                 }
               );
             });
@@ -82,7 +84,12 @@ const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
             socket.emit("assign_token", user.token.accessToken);
           }
         }
-      } catch (error) {}
+        if (user) {
+          MyEventEmitter.emit("my_conversations", { me: user.id });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     socket.on("chat", ({ type, content, file }) => {
@@ -103,6 +110,15 @@ const advise = (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
           });
         }
       }
+    });
+
+    MyEventEmitter.on("send_back_room", (room: { _id: string }) => {
+      console.log(room);
+      socket.join(room._id);
+    });
+
+    MyEventEmitter.on("send_back_rooms", (rooms: { [key: string]: string }) => {
+      socket.emit("my_conversations", rooms);
     });
   });
 };
