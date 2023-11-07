@@ -3,6 +3,8 @@ import { Socket } from "socket.io-client";
 import { MyEventEmitter } from "../../events";
 import authServiceClient from "../../services/auth";
 import crypto from "crypto";
+import { Socket as SocketS } from "socket.io";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 type User = {
   id: string;
@@ -31,7 +33,59 @@ const verify = async <T>(token: string): Promise<T> => {
 };
 
 const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
-  const availableSocket = new Map();
+  const availableSocket = new Map<
+    string,
+    SocketS<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
+  >();
+
+  MyEventEmitter.on(
+    "send_back_room_to_send_message",
+    (room: { _id: string }, extend, sender) => {
+      const me = availableSocket.get(sender);
+      const targetRoom = io.adapter.rooms.get(room._id);
+      let hasAnotherIn = false;
+      if (targetRoom) {
+        for (const r of [...targetRoom]) {
+          if (r !== me?.id) {
+            hasAnotherIn = true;
+            break;
+          }
+        }
+      }
+      io.to(room._id).emit("receive_message", extend);
+      if (!hasAnotherIn) {
+        adviseIo.emit("chat", {
+          ...extend,
+          room: room._id,
+        });
+      }
+    }
+  );
+
+  MyEventEmitter.on(
+    "send_back_room_to_connect",
+    async (room: { _id: string }, _, sender) => {
+      const me = availableSocket.get(sender);
+      if (me) {
+        const joinedRooms = [...me?.rooms];
+        if (Array.isArray(joinedRooms)) {
+          for (const r of joinedRooms) {
+            me.leave(r);
+          }
+        }
+        me?.join(room._id);
+      }
+    }
+  );
+
+  MyEventEmitter.on("send_back_rooms", ({ rooms, me }: any) => {
+    availableSocket.get(me)?.emit("my_conversations", rooms);
+  });
+
+  adviseIo.on("receive_message", ({ content, type, room, sender }) => {
+    // socket.emit("receive_message", { content, type, room, sender });
+    io.to(room).emit("receive_message", { content, type, room, sender });
+  });
 
   io.on("connection", async (socket) => {
     let user: User | null = null;
@@ -100,29 +154,6 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
       }
     });
 
-    adviseIo.on("receive_message", ({ content, type, room, sender }) => {
-      // socket.emit("receive_message", { content, type, room, sender });
-      io.to(room).emit("receive_message", { content, type, room, sender });
-    });
-
-    MyEventEmitter.on(
-      "send_back_room_to_send_message",
-      (room: { _id: string }, extend) => {
-        io.to(room._id).emit("receive_message", extend);
-      }
-    );
-
-    MyEventEmitter.on(
-      "send_back_room_to_connect",
-      async (room: { _id: string }, _, sender) => {
-        availableSocket.get(sender)?.join(room._id);
-      }
-    );
-
-    MyEventEmitter.on("send_back_rooms", ({ rooms, me }: any) => {
-      availableSocket.get(me)?.emit("my_conversations", rooms);
-    });
-
     socket.on("connect_room", async ({ target, roomId, token }) => {
       const _verify = await verify<{
         id: string;
@@ -141,40 +172,42 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
     socket.on(
       "chat",
       async ({ type, content, file, room, target, token }: any) => {
-        const _verify = await verify<{ id: string; email: string }>(token);
-        if (_verify) {
-          MyEventEmitter.emit("connect_room", {
+        const _verify = await verify<{
+          id: string;
+          email: string;
+          socket: string;
+        }>(token);
+        MyEventEmitter.emit("connect_room", {
+          sender: _verify.id,
+          receiver: target,
+          roomId: room,
+          back: "send_back_room_to_send_message",
+          extend: {
+            content,
+            type,
+            room,
             sender: _verify.id,
-            receiver: target,
-            roomId: room,
-            back: "send_back_room_to_send_message",
-            extend: {
-              content,
-              type,
-              room,
-              sender: _verify.id,
-            },
-          });
-          // adviseIo.emit("chat", {
-          //   type,
-          //   content,
-          //   file,
-          //   room,
-          //   sender: _verify.id,
-          // });
-          // io.to(room).emit("receive_message", {
-          //   content,
-          //   type,
-          //   room,
-          //   sender: _verify.id,
-          // });
-        }
+          },
+        });
+        // adviseIo.emit("chat", {
+        //   type,
+        //   content,
+        //   file,
+        //   room,
+        //   sender: _verify.id,
+        // });
+        // io.to(room).emit("receive_message", {
+        //   content,
+        //   type,
+        //   room,
+        //   sender: _verify.id,
+        // });
       }
     );
 
     socket.on("disconnect", () => {
       console.log(`${socket.id} disconnect`);
-      // socket.disconnect();
+      socket.disconnect();
     });
   });
 };
