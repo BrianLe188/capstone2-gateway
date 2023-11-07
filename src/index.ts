@@ -26,7 +26,7 @@ async function main() {
     const amqpConnection = await amqp.connect("amqp://127.0.0.1");
     const channel = await amqpConnection.createChannel();
 
-    app.use(morgan("dev"));
+    // app.use(morgan("dev"));
     app.use(cors());
     app.use(bodyParser.json());
 

@@ -53,8 +53,8 @@ const queue = async ({ channel }: { channel: Channel }) => {
     (msg) => {
       const content = msg?.content;
       if (content) {
-        const room = JSON.parse(content.toString());
-        MyEventEmitter.emit("send_back_room", room);
+        const { room, back, extend, sender } = JSON.parse(content.toString());
+        MyEventEmitter.emit(back, room, extend, sender);
       }
       channel.ack(msg as Message);
     },
@@ -68,8 +68,8 @@ const queue = async ({ channel }: { channel: Channel }) => {
     (msg) => {
       const content = msg?.content;
       if (content) {
-        const rooms = JSON.parse(content.toString());
-        MyEventEmitter.emit("send_back_rooms", rooms);
+        const { rooms, me } = JSON.parse(content.toString());
+        MyEventEmitter.emit("send_back_rooms", { rooms, me });
       }
       channel.ack(msg as Message);
     },
