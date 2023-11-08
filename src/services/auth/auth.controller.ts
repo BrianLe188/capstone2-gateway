@@ -1,6 +1,16 @@
 import { Request, Response } from "express";
 import authServiceClient from ".";
 
+const giveScore = async (request: Request, response: Response) => {
+  try {
+    const { id } = request.params;
+    const { score } = request.query;
+    console.log(id, score);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const getAllUser = async (request: Request, response: Response) => {
   try {
     const { data } = request.query;
@@ -134,6 +144,7 @@ const authController = {
   updateRole,
   deleteRole,
   getAllUser,
+  giveScore,
 };
 
 export default authController;

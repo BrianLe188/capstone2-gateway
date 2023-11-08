@@ -64,16 +64,28 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
 
   MyEventEmitter.on(
     "send_back_room_to_connect",
-    async (room: { _id: string }, _, sender) => {
+    async (room: { _id: string }, extend, sender) => {
       const me = availableSocket.get(sender);
       if (me) {
         const joinedRooms = [...me?.rooms];
         if (Array.isArray(joinedRooms)) {
           for (const r of joinedRooms) {
+            me.broadcast.to(r).emit("someone_leave_out_room", extend);
             me.leave(r);
           }
         }
-        me?.join(room._id);
+        me.join(room._id);
+      }
+    }
+  );
+
+  MyEventEmitter.on(
+    "send_back_room_to_leave",
+    async (room: { _id: string }, extend, sender) => {
+      const me = availableSocket.get(sender);
+      if (me) {
+        me.broadcast.to(room._id).emit("someone_leave_out_room", extend);
+        me.leave(room._id);
       }
     }
   );
@@ -83,7 +95,6 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   });
 
   adviseIo.on("receive_message", ({ content, type, room, sender }) => {
-    // socket.emit("receive_message", { content, type, room, sender });
     io.to(room).emit("receive_message", { content, type, room, sender });
   });
 
@@ -161,11 +172,31 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
         socket: string;
       }>(token);
       console.log(_verify);
+      const me = availableSocket.get(_verify.id);
+      if (roomId && me) {
+        me.broadcast.to(roomId).emit("someone_connect_to_room", _verify);
+      }
       MyEventEmitter.emit("connect_room", {
         sender: _verify.id,
         receiver: target,
         roomId: roomId,
         back: "send_back_room_to_connect",
+        extend: _verify,
+      });
+    });
+
+    socket.on("leave_room", async ({ target, roomId, token }) => {
+      const _verify = await verify<{
+        id: string;
+        email: string;
+        socket: string;
+      }>(token);
+      MyEventEmitter.emit("connect_room", {
+        sender: _verify.id,
+        receiver: target,
+        roomId: roomId,
+        back: "send_back_room_to_leave",
+        extend: _verify,
       });
     });
 
