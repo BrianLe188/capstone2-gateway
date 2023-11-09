@@ -5,7 +5,19 @@ const giveScore = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
     const { score } = request.query;
-    console.log(id, score);
+    if (score) {
+      authServiceClient.GiveScore(
+        { id, score: Number(score) },
+        (err: any, res: any) => {
+          if (err) {
+            return response.json("Error").status(400);
+          }
+          return response.json(res.message).status(200);
+        }
+      );
+    } else {
+      return response.json("Error").status(200);
+    }
   } catch (error) {
     return response.json("Error").status(500);
   }
