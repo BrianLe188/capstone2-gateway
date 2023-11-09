@@ -52,7 +52,7 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
           }
         }
       }
-      MyEventEmitter.emit("save_mesasge", {
+      MyEventEmitter.emit("save_message", {
         ...extend,
         room: room._id,
         createdAt: new Date(),
@@ -65,7 +65,6 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
           room: room._id,
         });
       }
-      // create message in database
     }
   );
 

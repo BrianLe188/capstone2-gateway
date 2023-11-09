@@ -14,7 +14,6 @@ const queue = async ({ channel }: { channel: Channel }) => {
 
   await channel.assertExchange(fileExchange, "direct");
   await channel.assertExchange(admissionExchange, "direct");
-  // await channel.assertExchange(messageExchange, "direct");
   await channel.assertQueue(returnMessageQueue);
 
   await channel.assertQueue(connectRoomQueue);

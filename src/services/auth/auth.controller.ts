@@ -147,6 +147,24 @@ const deleteRole = async (request: Request, response: Response) => {
   }
 };
 
+const verify = async (request: Request, response: Response) => {
+  const token = request.headers.authorization;
+  await new Promise((resolve, reject) => {
+    authServiceClient.VerifyToken(
+      {
+        token,
+      },
+      (err: any, res: any) => {
+        if (err) {
+          reject("Error");
+        }
+        return response.status(200).json(res?.data);
+      }
+    );
+  });
+  response.status(200).json({ id: "", email: "" });
+};
+
 const authController = {
   createUser,
   updateUser,
@@ -157,6 +175,7 @@ const authController = {
   deleteRole,
   getAllUser,
   giveScore,
+  verify,
 };
 
 export default authController;

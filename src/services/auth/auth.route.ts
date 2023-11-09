@@ -10,6 +10,7 @@ router.post("/login", authController.login);
 router.put("/users/:id", authController.updateUser);
 router.delete("/users/:id", authController.deleteUser);
 router.put("/users/give-score/:id", authController.giveScore);
+router.get("/users/verify", authController.verify);
 
 router.post("/roles", authController.createRole);
 router.put("/roles/:id", authController.updateRole);
