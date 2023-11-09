@@ -52,6 +52,12 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
           }
         }
       }
+      MyEventEmitter.emit("save_mesasge", {
+        ...extend,
+        room: room._id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
       io.to(room._id).emit("receive_message", extend);
       if (!hasAnotherIn) {
         adviseIo.emit("chat", {
@@ -59,6 +65,7 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
           room: room._id,
         });
       }
+      // create message in database
     }
   );
 
@@ -220,19 +227,6 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
             sender: _verify.id,
           },
         });
-        // adviseIo.emit("chat", {
-        //   type,
-        //   content,
-        //   file,
-        //   room,
-        //   sender: _verify.id,
-        // });
-        // io.to(room).emit("receive_message", {
-        //   content,
-        //   type,
-        //   room,
-        //   sender: _verify.id,
-        // });
       }
     );
 
