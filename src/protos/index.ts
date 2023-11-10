@@ -9,3 +9,9 @@ export const ADMISSION_PROTO_PATH = path.join(
   "admission",
   "admission.proto"
 );
+
+export const MESSAGE_PROTO_PATH = path.join(
+  __dirname,
+  "message",
+  "message.proto"
+);

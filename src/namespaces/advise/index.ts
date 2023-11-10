@@ -5,32 +5,8 @@ import authServiceClient from "../../services/auth";
 import crypto from "crypto";
 import { Socket as SocketS } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-
-type User = {
-  id: string;
-  socket: string;
-  fullName: string;
-  token: {
-    accessToken: string;
-    refreshToken: string;
-  };
-};
-
-const verify = async <T>(token: string): Promise<T> => {
-  return await new Promise((resolve, reject) => {
-    authServiceClient.VerifyToken(
-      {
-        token,
-      },
-      (err: any, res: any) => {
-        if (err) {
-          reject("Error");
-        }
-        resolve(res?.data);
-      }
-    );
-  });
-};
+import { verify } from "../../utils/common";
+import { User } from "../../utils/types";
 
 const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   const availableSocket = new Map<
