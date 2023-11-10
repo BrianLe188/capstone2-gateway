@@ -21,7 +21,6 @@ const getMessages = async (request: Request, response: Response) => {
           if (err) {
             return response.json("Error").status(500);
           }
-          console.log(res.messages);
           resolve(res?.messages);
         }
       );
