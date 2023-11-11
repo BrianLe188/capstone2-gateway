@@ -94,12 +94,41 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
             socket: string;
           }>(token);
           if (_verify) {
+            try {
+              user = await new Promise((resolve, reject) => {
+                authServiceClient.UpdateUser(
+                  {
+                    id: _verify.id,
+                    body: {
+                      socket: socket.id,
+                    },
+                  },
+                  (err: any, res: any) => {
+                    if (err) {
+                      reject("Error");
+                    }
+                    resolve(res?.user);
+                  }
+                );
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        } else {
+          try {
             user = await new Promise((resolve, reject) => {
-              authServiceClient.UpdateUser(
+              const random = crypto.randomBytes(10).toString();
+              authServiceClient.CreateUser(
                 {
-                  id: _verify.id,
-                  body: {
+                  user: {
+                    email: `${random}@gmail.com`,
+                    password: "123",
+                    fullName: random,
                     socket: socket.id,
+                  },
+                  role: {
+                    name: "quest",
                   },
                 },
                 (err: any, res: any) => {
@@ -110,32 +139,11 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
                 }
               );
             });
-          }
-        } else {
-          user = await new Promise((resolve, reject) => {
-            const random = crypto.randomBytes(10).toString();
-            authServiceClient.CreateUser(
-              {
-                user: {
-                  email: `${random}@gmail.com`,
-                  password: "123",
-                  fullName: random,
-                  socket: socket.id,
-                },
-                role: {
-                  name: "quest",
-                },
-              },
-              (err: any, res: any) => {
-                if (err) {
-                  reject("Error");
-                }
-                resolve(res?.user);
-              }
-            );
-          });
-          if (user) {
-            socket.emit("assign_token", user.token.accessToken);
+            if (user) {
+              socket.emit("assign_token", user.token.accessToken);
+            }
+          } catch (error) {
+            console.log(error);
           }
         }
         if (user) {

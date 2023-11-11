@@ -1,23 +1,35 @@
 import { Router } from "express";
 import { joiValidate } from "../../middlewares/validate";
 import admissionController from "./admission.controller";
+import {
+  applicationForAdmissionWithAHighSchoolScriptSchema,
+  applicationAdmissionRegistrationSchema,
+  applicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResultSchema,
+  applicationForStraightAdmissionAndPriorityConsiderationSchema,
+} from "../../utils/joi";
 
 const router = Router();
 
 router.post(
   "/apply/application-admisison-registration",
+  joiValidate(applicationAdmissionRegistrationSchema),
   admissionController.applyApplicationAdmissionRegistration
 );
 router.post(
   "/apply/application-for-admission-consideration-according-to-the-competence-assessment-test-result",
+  joiValidate(
+    applicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResultSchema
+  ),
   admissionController.applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult
 );
 router.post(
   "/apply/application-for-admission-with-a-high-school-script",
+  joiValidate(applicationForAdmissionWithAHighSchoolScriptSchema),
   admissionController.applyApplicationForAdmissionWithAHighSchoolScript
 );
 router.post(
   "/apply/application-for-straight-admission-and-priority-consideration",
+  joiValidate(applicationForStraightAdmissionAndPriorityConsiderationSchema),
   admissionController.applyApplicationForStraightAdmissionAndPriorityConsideration
 );
 
