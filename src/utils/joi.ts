@@ -77,3 +77,8 @@ export const applicationForStraightAdmissionAndPriorityConsiderationSchema =
     highschoolAddress: Joi.string().required(),
     subMajorId: Joi.string().required(),
   });
+
+export const login = Joi.object({
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});

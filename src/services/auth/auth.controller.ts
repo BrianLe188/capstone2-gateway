@@ -149,20 +149,26 @@ const deleteRole = async (request: Request, response: Response) => {
 
 const verify = async (request: Request, response: Response) => {
   const token = request.headers.authorization;
-  await new Promise((resolve, reject) => {
-    authServiceClient.VerifyToken(
-      {
-        token,
-      },
-      (err: any, res: any) => {
-        if (err) {
-          reject("Error");
+  try {
+    await new Promise((resolve, reject) => {
+      authServiceClient.VerifyToken(
+        {
+          token,
+        },
+        (err: any, res: any) => {
+          if (err) {
+            console.log(err);
+            reject("Error");
+          }
+          return response.status(200).json(res?.data);
         }
-        return response.status(200).json(res?.data);
-      }
-    );
-  });
-  response.status(200).json({ id: "", email: "" });
+      );
+    });
+    // response.status(200).json({ id: "", email: "" });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json("error");
+  }
 };
 
 const authController = {
