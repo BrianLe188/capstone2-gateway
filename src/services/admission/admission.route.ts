@@ -54,4 +54,23 @@ router.get(
   admissionController.getApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult
 );
 
+router.get(
+  "/application-admisison-registration/options",
+  admissionController.getRegistrationByCode
+);
+router.get(
+  "/application-for-admission-consideration-according-to-the-competence-assessment-test-result/options",
+  admissionController.getTestResultByCode
+);
+router.get(
+  "/application-admisison-high-school-script/options",
+  admissionController.getHighSchoolScriptByCode
+);
+router.get(
+  "/application-for-straight-admission-and-priority-consideration/options",
+  admissionController.getPriorityConsiderationByCode
+);
+
+router.get("/auto-accept", admissionController.autoAccept);
+
 export default router;

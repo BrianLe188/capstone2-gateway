@@ -29,7 +29,6 @@ const getApplyApplicationAdmissionRegistration = (
         if (err) {
           return response.json(res?.error).status(400);
         }
-        console.log(res);
         return response.json(res.applications).status(200);
       }
     );
@@ -196,6 +195,105 @@ const getAllObjectAdmission = async (_request: Request, response: Response) => {
   }
 };
 
+const getRegistrationByCode = async (request: Request, response: Response) => {
+  try {
+    const { code } = request.query;
+    const application = await new Promise((resolve, reject) => {
+      admissionServiceClient.GetApplicationRegistrationByCode(
+        { code: code as string },
+        (err: any, res: any) => {
+          if (err) {
+            reject("Error");
+          }
+          resolve(res);
+        }
+      );
+    });
+    return response.status(200).json(application);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getTestResultByCode = async (request: Request, response: Response) => {
+  try {
+    const { code } = request.query;
+    const application = await new Promise((resolve, reject) => {
+      admissionServiceClient.GetApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResultByCode(
+        { code: code as string },
+        (err: any, res: any) => {
+          if (err) {
+            reject("Error");
+          }
+          resolve(res);
+        }
+      );
+    });
+    return response.status(200).json(application);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getHighSchoolScriptByCode = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { code } = request.query;
+    const application = await new Promise((resolve, reject) => {
+      admissionServiceClient.GetApplicationForAdmissionWithAHighSchoolScriptByCode(
+        { code: code as string },
+        (err: any, res: any) => {
+          if (err) {
+            reject("Error");
+          }
+          resolve(res);
+        }
+      );
+    });
+    return response.status(200).json(application);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const getPriorityConsiderationByCode = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { code } = request.query;
+    const application = await new Promise((resolve, reject) => {
+      admissionServiceClient.GetApplicationForStraightAdmissionAndPriorityConsiderationByCode(
+        { code: code as string },
+        (err: any, res: any) => {
+          if (err) {
+            reject("Error");
+          }
+          resolve(res);
+        }
+      );
+    });
+    return response.status(200).json(application);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const autoAccept = (request: Request, response: Response) => {
+  try {
+    admissionServiceClient.AutoAccept({}, (err: any, res: any) => {
+      if (err) {
+        // return response.json(err).status(400);
+      }
+    });
+    return response.json("Done").status(200);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   applyApplicationAdmissionRegistration,
   applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
@@ -209,6 +307,11 @@ const admissionController = {
   getApplicationForAdmissionWithAHighSchoolScript,
   getApplicationForStraightAdmissionAndPriorityConsideration,
   getApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
+  getRegistrationByCode,
+  getTestResultByCode,
+  getHighSchoolScriptByCode,
+  getPriorityConsiderationByCode,
+  autoAccept,
 };
 
 export default admissionController;
