@@ -3,14 +3,13 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import morgan from "morgan";
 import clientRoute from "./routes";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import advise from "./namespaces/advise";
-import { io as clientIo } from "socket.io-client";
 import amqp from "amqplib";
 import queue from "./queue";
+import { adviseIo } from "./socket";
 
 const app = express();
 const server = createServer(app);
@@ -19,7 +18,6 @@ const io = new Server(server, {
     origin: "*",
   },
 });
-const adviseIo = clientIo("http://localhost:4998/advise");
 
 async function main() {
   try {

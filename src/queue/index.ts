@@ -1,5 +1,6 @@
 import { Channel, Message } from "amqplib";
 import { MyEventEmitter } from "../events";
+import { callSendAPI } from "../services/messenger/messenger.util";
 
 const queue = async ({ channel }: { channel: Channel }) => {
   const fileExchange = "file";
@@ -11,6 +12,8 @@ const queue = async ({ channel }: { channel: Channel }) => {
   const sendBackRoomsQueue = "send_back_rooms_queue";
   const roomQueue = "room_queue";
   const messageQueue = "message_queue";
+  const aiQueue = "ai_queue";
+  const returnMessage = "return_message_queue";
 
   await channel.assertExchange(fileExchange, "direct");
   await channel.assertExchange(admissionExchange, "direct");
@@ -21,9 +24,11 @@ const queue = async ({ channel }: { channel: Channel }) => {
   await channel.assertQueue(sendBackRoomsQueue);
   await channel.assertQueue(roomQueue);
   await channel.assertQueue(messageQueue);
+  await channel.assertQueue(aiQueue);
+  await channel.assertQueue(returnMessage);
 
-  MyEventEmitter.on("upload_file", (data) => {
-    channel.publish(fileExchange, "write", data.buffer);
+  MyEventEmitter.on("upload_file", ({ data, routing }) => {
+    channel.publish(fileExchange, routing, data.buffer);
   });
 
   MyEventEmitter.on(
@@ -79,6 +84,21 @@ const queue = async ({ channel }: { channel: Channel }) => {
     }
   );
 
+  channel.consume(
+    returnMessage,
+    (msg) => {
+      try {
+        if (msg?.content) {
+          const { result, sender_psid } = JSON.parse(msg.content.toString());
+          callSendAPI(sender_psid, { text: result });
+        }
+      } catch (error) {}
+    },
+    {
+      noAck: true,
+    }
+  );
+
   MyEventEmitter.on("connect_room", (data) => {
     channel.sendToQueue(connectRoomQueue, Buffer.from(JSON.stringify(data)));
   });
@@ -89,6 +109,10 @@ const queue = async ({ channel }: { channel: Channel }) => {
 
   MyEventEmitter.on("save_message", (data) => {
     channel.sendToQueue(messageQueue, Buffer.from(JSON.stringify(data)));
+  });
+
+  MyEventEmitter.on("chat-from-messenger", (data) => {
+    channel.sendToQueue(aiQueue, Buffer.from(JSON.stringify(data)));
   });
 };
 

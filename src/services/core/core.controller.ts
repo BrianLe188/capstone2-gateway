@@ -379,7 +379,7 @@ const createFile = async (request: Request, response: Response) => {
   try {
     const { name, extension } = request.body;
     const file = request.file;
-    MyEventEmitter.emit("upload_file", file);
+    MyEventEmitter.emit("upload_file", { data: file, routing: "write" });
     const path: string = await new Promise((resolve, _reject) => {
       MyEventEmitter.on("return_path", ({ path }) => {
         if (path) {
@@ -407,7 +407,7 @@ const updateFile = async (request: Request, response: Response) => {
     const { name, extension } = request.body;
     const file = request.file;
     if (file) {
-      MyEventEmitter.emit("upload_file", file);
+      MyEventEmitter.emit("upload_file", { data: file, routing: "write" });
     }
     const path: string = await new Promise((resolve, _reject) => {
       MyEventEmitter.on("return_path", ({ path }) => {

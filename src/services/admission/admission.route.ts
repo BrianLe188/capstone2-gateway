@@ -73,4 +73,21 @@ router.get(
 
 router.get("/auto-accept", admissionController.autoAccept);
 
+router.put(
+  "/application-admisison-registration/update/:id",
+  admissionController.updateApplicationRegistration
+);
+router.put(
+  "/application-for-admission-consideration-according-to-the-competence-assessment-test-result/update/:id",
+  admissionController.updateApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult
+);
+router.put(
+  "/application-admisison-high-school-script/update/:id",
+  admissionController.updateApplicationForAdmissionWithAHighSchoolScript
+);
+router.put(
+  "/application-for-straight-admission-and-priority-consideration/update/:id",
+  admissionController.updateApplicationForStraightAdmissionAndPriorityConsideration
+);
+
 export default router;

@@ -294,6 +294,96 @@ const autoAccept = (request: Request, response: Response) => {
   }
 };
 
+const updateApplicationRegistration = (
+  request: Request,
+  response: Response
+) => {
+  const { id } = request.params;
+  try {
+    admissionServiceClient.UpdateApplicationRegistration(
+      {
+        id,
+        ...request.body,
+      },
+      (err: any, res: any) => {
+        if (err) {
+          // return response.json(err).status(400);
+        }
+      }
+    );
+    return response.json("Done").status(200);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateApplicationForAdmissionWithAHighSchoolScript = (
+  request: Request,
+  response: Response
+) => {
+  const { id } = request.params;
+  try {
+    admissionServiceClient.UpdateApplicationForAdmissionWithAHighSchoolScript(
+      {
+        id,
+        ...request.body,
+      },
+      (err: any, res: any) => {
+        if (err) {
+          // return response.json(err).status(400);
+        }
+      }
+    );
+    return response.json("Done").status(200);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
+const updateApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult =
+  (request: Request, response: Response) => {
+    const { id } = request.params;
+    try {
+      admissionServiceClient.UpdateApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult(
+        {
+          id,
+          ...request.body,
+        },
+        (err: any, res: any) => {
+          if (err) {
+            // return response.json(err).status(400);
+          }
+        }
+      );
+      return response.json("Done").status(200);
+    } catch (error) {
+      return response.json("Error").status(500);
+    }
+  };
+
+const updateApplicationForStraightAdmissionAndPriorityConsideration = (
+  request: Request,
+  response: Response
+) => {
+  const { id } = request.params;
+  try {
+    admissionServiceClient.UpdateApplicationForStraightAdmissionAndPriorityConsideration(
+      {
+        id,
+        ...request.body,
+      },
+      (err: any, res: any) => {
+        if (err) {
+          // return response.json(err).status(400);
+        }
+      }
+    );
+    return response.json("Done").status(200);
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const admissionController = {
   applyApplicationAdmissionRegistration,
   applyApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
@@ -312,6 +402,10 @@ const admissionController = {
   getHighSchoolScriptByCode,
   getPriorityConsiderationByCode,
   autoAccept,
+  updateApplicationRegistration,
+  updateApplicationForAdmissionWithAHighSchoolScript,
+  updateApplicationForAdmissionConsiderationAccordingToTheCompetenceAssessmentTestResult,
+  updateApplicationForStraightAdmissionAndPriorityConsideration,
 };
 
 export default admissionController;
