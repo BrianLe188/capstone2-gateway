@@ -15,6 +15,16 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
   >();
 
   MyEventEmitter.on(
+    "send_back_room_to_know_someone_typing",
+    (room: { _id: string }, _, sender) => {
+      const me = availableSocket.get(sender);
+      if (me) {
+        me.broadcast.to(room._id).emit("someone_typing");
+      }
+    }
+  );
+
+  MyEventEmitter.on(
     "send_back_room_to_send_message",
     (room: { _id: string }, extend, sender) => {
       const me = availableSocket.get(sender);
@@ -187,6 +197,20 @@ const advise = async (io: Namespace, { adviseIo }: { adviseIo: Socket }) => {
         roomId: roomId,
         back: "send_back_room_to_leave",
         extend: _verify,
+      });
+    });
+
+    socket.on("typing", async ({ room, target, token }) => {
+      const _verify = await verify<{
+        id: string;
+        email: string;
+        socket: string;
+      }>(token);
+      MyEventEmitter.emit("connect_room", {
+        sender: _verify.id,
+        receiver: target,
+        roomId: room,
+        back: "send_back_room_to_know_someone_typing",
       });
     });
 
