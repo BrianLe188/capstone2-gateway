@@ -14,6 +14,7 @@ const queue = async ({ channel }: { channel: Channel }) => {
   const messageQueue = "message_queue";
   const aiQueue = "ai_queue";
   const returnMessage = "return_message_queue";
+  const generateSourceFromReportQueue = "generate_source_from_report_queue";
 
   await channel.assertExchange(fileExchange, "direct");
   await channel.assertExchange(admissionExchange, "direct");
@@ -26,6 +27,11 @@ const queue = async ({ channel }: { channel: Channel }) => {
   await channel.assertQueue(messageQueue);
   await channel.assertQueue(aiQueue);
   await channel.assertQueue(returnMessage);
+  await channel.assertQueue(generateSourceFromReportQueue);
+
+  MyEventEmitter.on("generate_source_from_report", () => {
+    channel.sendToQueue(generateSourceFromReportQueue, Buffer.from("start"));
+  });
 
   MyEventEmitter.on("upload_file", ({ data, routing }) => {
     channel.publish(fileExchange, routing, data.buffer);

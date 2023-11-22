@@ -10,5 +10,11 @@ router.post(
   upload.single("file"),
   settingController.importQATemplate
 );
+router.get("/sync-rule", settingController.syncRule);
+router.get("/statistic-submajor", settingController.statisticSubMajor);
+router.get(
+  "/generate-source-from-report",
+  settingController.generateSourceFromReport
+);
 
 export default router;
