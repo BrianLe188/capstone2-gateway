@@ -16,5 +16,6 @@ router.get(
   "/generate-source-from-report",
   settingController.generateSourceFromReport
 );
+router.get("/store-doc-pinecone", settingController.storePinecone);
 
 export default router;

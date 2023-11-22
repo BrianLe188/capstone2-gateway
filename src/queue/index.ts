@@ -15,6 +15,7 @@ const queue = async ({ channel }: { channel: Channel }) => {
   const aiQueue = "ai_queue";
   const returnMessage = "return_message_queue";
   const generateSourceFromReportQueue = "generate_source_from_report_queue";
+  const storeDocsPineconeQueue = "store_docs_pinecone_queue";
 
   await channel.assertExchange(fileExchange, "direct");
   await channel.assertExchange(admissionExchange, "direct");
@@ -28,6 +29,11 @@ const queue = async ({ channel }: { channel: Channel }) => {
   await channel.assertQueue(aiQueue);
   await channel.assertQueue(returnMessage);
   await channel.assertQueue(generateSourceFromReportQueue);
+  await channel.assertQueue(storeDocsPineconeQueue);
+
+  MyEventEmitter.on("store_docs_pinecone", () => {
+    channel.sendToQueue(storeDocsPineconeQueue, Buffer.from("start"));
+  });
 
   MyEventEmitter.on("generate_source_from_report", () => {
     channel.sendToQueue(generateSourceFromReportQueue, Buffer.from("start"));

@@ -10,6 +10,13 @@ const importQATemplate = (request: Request, response: Response) => {
   } catch (error) {}
 };
 
+const storePinecone = (request: Request, response: Response) => {
+  try {
+    MyEventEmitter.emit("store_docs_pinecone");
+    response.status(200).json("done");
+  } catch (error) {}
+};
+
 const generateSourceFromReport = (request: Request, response: Response) => {
   try {
     MyEventEmitter.emit("generate_source_from_report");
@@ -36,6 +43,7 @@ const settingController = {
   syncRule,
   statisticSubMajor,
   generateSourceFromReport,
+  storePinecone,
 };
 
 export default settingController;
