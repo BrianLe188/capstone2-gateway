@@ -3,6 +3,18 @@ import messageServiceClient from ".";
 import { verify } from "../../utils/common";
 import { User } from "../../utils/types";
 
+const createConversation = async (request: Request, response: Response) => {
+  try {
+    messageServiceClient.CreateConversation(
+      request.body,
+      (err: any, res: any) => {}
+    );
+    return response.status(200).json("Done");
+  } catch (error) {
+    return response.json("Error").status(500);
+  }
+};
+
 const getMessages = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
@@ -33,6 +45,7 @@ const getMessages = async (request: Request, response: Response) => {
 
 const messageController = {
   getMessages,
+  createConversation,
 };
 
 export default messageController;
